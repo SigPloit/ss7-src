@@ -253,7 +253,7 @@ public class MTForwardSMS extends MTSMSLowLevel  {
             this.sccpStack.getSccpResource().addRemoteSpc(1, SERVER_SPC, 0, 0);
             this.sccpStack.getSccpResource().addRemoteSsn(1, SERVER_SPC, SSN_Server, 0, false);
 
-            this.sccpStack.getRouter().addMtp3ServiceAccessPoint(1, 1, CLIENT_SPC, NETWORK_INDICATOR, 0);
+            this.sccpStack.getRouter().addMtp3ServiceAccessPoint(1, 1, CLIENT_SPC, NETWORK_INDICATOR, 0, null);
 
             this.sccpStack.getRouter().addMtp3Destination(1, 1, SERVER_SPC, SERVER_SPC, 0, 255, 255);
 
@@ -290,9 +290,9 @@ public class MTForwardSMS extends MTSMSLowLevel  {
 
             //translate local GT to its POC+SSN (local rule)GTT
             this.sccpStack.getRouter().addRule
-                    (1, RuleType.SOLITARY, null, OriginationType.LOCAL, patternRemote, maskRemote, 1, -1, null, 0);
+                    (1, RuleType.SOLITARY, null, OriginationType.LOCAL, patternRemote, maskRemote, 1, -1, null, 0, null);
             this.sccpStack.getRouter().addRule
-                    (2, RuleType.SOLITARY, null, OriginationType.REMOTE, patternLocal, maskLocal, 2, -1, null, 0);
+                    (2, RuleType.SOLITARY, null, OriginationType.REMOTE, patternLocal, maskLocal, 2, -1, null, 0, null);
 
             System.out.println("\033[32m[+]\033[0mInitialized SCCP Stack ....");
         }catch(Exception e){
