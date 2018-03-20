@@ -106,6 +106,8 @@ import org.mobicents.protocols.ss7.tcap.api.TCAPStack;
 import org.mobicents.protocols.ss7.tcap.asn.ApplicationContextName;
 import org.mobicents.protocols.ss7.tcap.asn.comp.Problem;
 
+import fuzzy.FuzzyIMSI;
+
 abstract class FUlLowLevel implements MAPDialogListener, MAPServiceMobilityListener, MAPServiceSmsListener {
 
     // MTP Details
@@ -423,9 +425,9 @@ public class FuzzyUpdateLocation extends FUlLowLevel {
 	    for (String fi : fuzzy_imsi) {
 		try {
 		    // Create IMSI of the target
-		    IMSI imsi = this.mapProvider.getMAPParameterFactory().createIMSI(fi);
-		    mapDialog.addUpdateLocationRequest(imsi, msc, null, vlr, null, null, null, false, false, null, null,
-			    null, false, false);
+		    FuzzyIMSI imsi = (FuzzyIMSI) this.mapProvider.getMAPParameterFactory().createIMSI(fi);
+		    mapDialog.addUpdateLocationRequest((IMSI) imsi, msc, null, vlr, null, null, null, false, false,
+			    null, null, null, false, false);
 
 		    mapDialog.send();
 		    System.out.println(
