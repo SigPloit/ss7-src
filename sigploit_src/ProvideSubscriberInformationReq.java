@@ -584,18 +584,13 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
             System.out.println("\033[32m[+]\033[0mTarget is served by the SGSN:\033[31m " + sgsn.getAddress());
         }
 
-        ISDNAddressString Vmsc = null;
-        int aol = 0;
-        int mccLai = 0;
-        int mncLai = 0;
-        int lacLai = 0;
         try {
 
             if (provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation() != null) {
 
-                Vmsc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation().getVlrNumber();
+                ISDNAddressString Vmsc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation().getVlrNumber();
 
-                aol = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                int aol = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
                         .getAgeOfLocationInformation();
 
                 if (Vmsc == null) {
@@ -631,11 +626,11 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
                     if (provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
                             .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength() != null) {
 
-                        mccLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                        int mccLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
                                 .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getMCC();
-                        mncLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                        int mncLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
                                 .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getMNC();
-                        lacLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                        int lacLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
                                 .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getLac();
 
                         System.out.println("\033[32m[+]\033[0mLAI:\033[31mLAIMCC(" + Integer.toString(mccLai) + ")"
@@ -655,10 +650,10 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
         System.out.println("\033[34m[*]\033[0mClosing Session...");
         try {
             Thread.sleep(10000);
-            System.exit(0);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.exit(0);
     }
 
     @Override
